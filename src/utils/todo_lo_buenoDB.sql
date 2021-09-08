@@ -75,3 +75,18 @@ insert into almacena(idBodega,idproducto,cantidad) values (3,7,19);
 insert into almacena(idBodega,idproducto,cantidad) values (3,8,24);
 
 
+-- pruebas---
+use todo_lo_bueno;
+update almacena set  cantidad = cantidad - 5 where idBodega =1  and idproducto = 1;
+select bodega.nombre, direccion, producto.nombre,precio,cantidad 
+from bodega join producto join almacena 
+on (bodega.idBodega = almacena.idBodega and producto.idproducto = almacena.idproducto);
+
+select * from almacena;
+select * from bodega;
+
+insert into almacena(idBodega,idproducto,cantidad) values((select idBodega from bodega where nombre = "la amistad"),1,10);
+delete from almacena where idBodega = 1 and cantidad = 10;
+
+select * from almacena;
+
