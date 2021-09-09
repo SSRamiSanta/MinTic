@@ -5,7 +5,6 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import javax.swing.JPanel;
 
 public class VentanaPrincipal extends JFrame {
 
@@ -37,5 +36,4 @@ public class VentanaPrincipal extends JFrame {
         PanelControles panelControles = new PanelControles(panelResultados);
         add(panelControles);
     }
-
 }

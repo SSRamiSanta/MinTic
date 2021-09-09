@@ -24,16 +24,17 @@ public class ConexionDB {
 
             conn = DriverManager.getConnection(url, usuario, contraseña);
 
-            if (conn != null) {
-                System.out.println("conectado");
-            }
+            if (conn != null) {System.out.println("conectado");}
             
         } catch (Exception e) {
             e.getMessage();
+            System.out.println("Error: "+e.getMessage());
+            System.out.println("conn "+conn);
         }
 
         return conn;
     } 
+
     public static void main(String[] args) {
         getConexion();
     }

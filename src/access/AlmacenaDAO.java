@@ -22,7 +22,6 @@ public class AlmacenaDAO {
             if (conn == null) {
                 conn = ConexionDB.getConexion();
             }
-
             String sql = "SELECT bodega.nombre, direccion, producto.nombre,precio,cantidad"
                     + " FROM bodega JOIN producto JOIN almacena"
                     + " ON (bodega.idBodega = almacena.idBodega AND producto.idproducto = almacena.idproducto);";
@@ -33,11 +32,9 @@ public class AlmacenaDAO {
                 AlmacenaModel almacena = new AlmacenaModel(result.getString(1), result.getString(2), result.getString(3), result.getDouble(4), result.getInt(5));
                 almacenas.add(almacena);
             }
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Código : " + e.getErrorCode() + "\nError :" + e.getMessage());
         }
-
         return almacenas;
     }
 
@@ -56,23 +53,12 @@ public class AlmacenaDAO {
             System.out.println("producto " + producto);
             if (result.next() == true) {
                 AlmacenaModel almacena = new AlmacenaModel(result.getInt(1), result.getInt(2));
-                System.out.println("id Bodega: " + result.getInt(1));
-                System.out.println("id producto: " + result.getInt(2));
                 almacenas.add(almacena);
 
             } else {
                 System.out.println("No existen esos datos");
             }
 
-            /*
-            while (result.next()) {
-                AlmacenaModel almacena = new AlmacenaModel(result.getInt(1), result.getInt(2), cantidad);
-                System.out.println("id Bodega: " + result.getInt(1));
-                System.out.println("id producto: " + result.getInt(2));
-                almacenas.add(almacena);
-                break;
-            }
-             */
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Código : " + e.getErrorCode() + "\nError :" + e.getMessage());
         }
@@ -125,6 +111,30 @@ public class AlmacenaDAO {
         return almacenas;
     }
 
+    public AlmacenaModel getAlmacena(int idBodega, int idProducto) {
+        AlmacenaModel almacena = null;
+
+        try {
+            if (conn == null) {
+                conn = ConexionDB.getConexion();
+            }
+
+            String sql = "SELECT cantidad FROM almacena WHERE idBodega = ? AND idproducto = ?;";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, idBodega);
+            statement.setInt(2, idProducto);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                almacena = new AlmacenaModel(idBodega, idProducto, result.getInt(1));
+                break;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Código : " + e.getErrorCode() + "\nError :" + e.getMessage());
+        }
+
+        return almacena;
+    }
+
     public void insertAlmacena(AlmacenaModel almacena) {
         try {
             if (conn == null) {
@@ -154,7 +164,7 @@ public class AlmacenaDAO {
                 conn = ConexionDB.getConexion();
             }
 
-            String sql = "UPDATE almacena SET idBodega = ?, idproducto = ?, cantidad = ?  WHERE idBodega = ? AND idproducto = ?;";
+            String sql = "UPDATE almacena SET idBodega = ?, idproducto = ?, cantidad = cantidad + ?  WHERE idBodega = ? AND idproducto = ?;";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, almacena.getIdBodegaFK());
             statement.setInt(2, almacena.getIdProductoFK());
@@ -188,5 +198,20 @@ public class AlmacenaDAO {
             JOptionPane.showMessageDialog(null, "Código : " + e.getErrorCode() + "\nError :" + e.getMessage());
         }
 
+    }
+
+    public boolean siExisteRegistro(String sql ,int idBodega, int idProducto) {
+        try {
+            if (conn == null) conn = ConexionDB.getConexion();
+
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, idBodega);
+            statement.setInt(2, idProducto);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Código : " + e.getErrorCode() + "\nError :" + e.getMessage());
+        }
+        return false;
     }
 }

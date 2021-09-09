@@ -1,13 +1,12 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-public class PanelResultados extends JPanel {
+public class PanelResultados extends JPanel{
 
     private JTable tblResultados;
     private JScrollPane jspPane;
@@ -21,12 +20,12 @@ public class PanelResultados extends JPanel {
         this.tblResultados = new JTable();
         this.tblResultados.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         this.jspPane = new JScrollPane(this.tblResultados);
-        //this.setBackground(Color.gray);
         System.out.println(this.tblResultados.getSelectedRow());
         add(jspPane, BorderLayout.CENTER);
 
     }
 
+     //---------------------getters y setters ---------------------//
     public JTable getTblResultados() {
         return tblResultados;
     }
